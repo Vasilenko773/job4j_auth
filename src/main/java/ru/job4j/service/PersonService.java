@@ -3,7 +3,9 @@ package ru.job4j.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.job4j.model.Employee;
 import ru.job4j.model.Person;
+import ru.job4j.repository.EmployeeRepository;
 import ru.job4j.repository.PersonRepository;
 
 import java.util.ArrayList;
@@ -12,6 +14,9 @@ import java.util.List;
 @Service
 
 public class PersonService {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Autowired
     private PersonRepository repository;
@@ -51,5 +56,12 @@ public class PersonService {
     @Transactional
     public void deletePerson(String login) {
         repository.deletePersonByLogin(login);
+    }
+
+
+    public List<Employee> findAllEmployees() {
+        List<Employee> employees = new ArrayList<>();
+        employeeRepository.findAll().forEach(employees::add);
+      return employees;
     }
 }
