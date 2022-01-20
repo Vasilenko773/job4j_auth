@@ -7,13 +7,13 @@ import ru.job4j.model.Person;
 
 public interface PersonRepository extends CrudRepository<Person, Integer> {
 
-    @Transactional
+
     public Person findByLogin(String login);
 
-    @Transactional
+
     public void deletePersonByLogin(String login);
 
-    @Transactional
+
     public void deletePersonById(Integer id);
 
 }

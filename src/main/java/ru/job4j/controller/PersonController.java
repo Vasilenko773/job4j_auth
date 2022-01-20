@@ -25,7 +25,6 @@ public class PersonController {
 
 
     @GetMapping("/")
-    @Transactional
     public List<Person> findAll() {
         return StreamSupport.stream(
                 this.service.findAllPerson().spliterator(), false
@@ -33,13 +32,11 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    @Transactional
     public ResponseEntity<Person> findById(@PathVariable int id) {
         return new ResponseEntity<Person>(service.findById(id) != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/")
-    @Transactional
     public ResponseEntity<Void> saveOrUpdate(@RequestBody Person person) {
         this.service.saveOrUpdate(person);
         return ResponseEntity.ok().build();
@@ -47,7 +44,6 @@ public class PersonController {
 
 
     @DeleteMapping("/{id}")
-    @Transactional
     public ResponseEntity<Void> delete(@PathVariable int id) {
         if (service.findById(id) != null) {
             this.service.deletePersonById(id);
@@ -56,7 +52,6 @@ public class PersonController {
         return null;
     }
 
-    @Transactional
     public Person findByLogin(String login) {
         return service.findByLogin(login);
     }

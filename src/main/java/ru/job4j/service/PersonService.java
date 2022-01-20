@@ -21,39 +21,39 @@ public class PersonService {
     @Autowired
     private PersonRepository repository;
 
-    @Transactional
+
     public List<Person> findAllPerson() {
         List<Person> people = new ArrayList<>();
         repository.findAll().forEach(people::add);
         return people;
     }
 
-    @Transactional
+
     public void saveOrUpdate(Person person) {
         repository.save(person);
     }
 
-    @Transactional
+
     public Person findById(int id) {
         return repository.findById(id).orElse(null);
     }
 
-    @Transactional
+
     public void deletePerson(Person person) {
         repository.delete(person);
     }
 
-    @Transactional
+
     public void deletePersonById(Integer id) {
         repository.deletePersonById(id);
     }
 
-    @Transactional
+
     public Person findByLogin(String login) {
         return repository.findByLogin(login);
     }
 
-    @Transactional
+
     public void deletePerson(String login) {
         repository.deletePersonByLogin(login);
     }
