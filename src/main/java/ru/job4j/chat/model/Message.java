@@ -6,20 +6,24 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "role")
+@Table(name = "message")
 @Component
-public class Role {
+public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String name;
+    private String text;
 
-    public static Role of(String name) {
-        Role role = new Role();
-        role.name = name;
-        return role;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public static Message of(String text) {
+        Message message = new Message();
+        message.text = text;
+        return message;
     }
 
     public int getId() {
@@ -30,12 +34,20 @@ public class Role {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getText() {
+        return text;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -46,8 +58,8 @@ public class Role {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Role role = (Role) o;
-        return id == role.id;
+        Message message = (Message) o;
+        return id == message.id;
     }
 
     @Override
@@ -57,9 +69,9 @@ public class Role {
 
     @Override
     public String toString() {
-        return "Role{"
+        return "Message{"
                 + "id=" + id
-                + ", name='" + name + '\''
+                + ", text='" + text + '\''
                 + '}';
     }
 }
