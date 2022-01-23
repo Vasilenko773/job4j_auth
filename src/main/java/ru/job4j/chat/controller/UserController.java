@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.chat.exception.UserAllReadyExistException;
 import ru.job4j.chat.model.Message;
 import ru.job4j.chat.model.Room;
@@ -14,6 +15,7 @@ import ru.job4j.model.Person;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -30,7 +32,14 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<User> create(@RequestBody User user) {
+    @ExceptionHandler(value = {UserAllReadyExistException.class, IllegalArgumentException.class})
+    public ResponseEntity<User> create(@RequestBody Map<String, String> body) {
+        var login = body.get("login");
+        var password = body.get("password");
+        if (login == null || password == null) {
+            throw new NullPointerException("Логин или пароль не указаны");
+        }
+        User user = User.of(login, password);
         try {
             this.chatService.saveUser(user);
             return new ResponseEntity<User>(HttpStatus.CREATED);
@@ -42,9 +51,12 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<User> findUserById(@RequestParam int id) {
-        return new ResponseEntity<User>(chatService.findUserById(id) != null
-                ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    public User findUserById(@RequestParam int id) {
+        if (chatService.findUserById(id) == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Пользователь с таким id не найден.");
+        }
+        return chatService.findUserById(id);
     }
 
     @DeleteMapping("/{id}")

@@ -8,6 +8,7 @@ import ru.job4j.chat.model.User;
 import ru.job4j.chat.service.ChatService;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -25,7 +26,13 @@ public class UserRegController {
    }
 
     @PostMapping("/sign-up")
-    public void signUp(@RequestBody User user) {
+    public void signUp(@RequestBody Map<String, String> body) {
+        var login = body.get("login");
+        var password = body.get("password");
+        if (login == null || password == null) {
+            throw new NullPointerException("Логин или пароль не указаны");
+        }
+        User user = User.of(login, password);
         user.setPassword(encoder.encode(user.getPassword()));
         try {
             chatService.saveUser(user);
@@ -42,5 +49,9 @@ public class UserRegController {
 
 /*
 curl -i -H "Content-Type:application/json" -X POST -d {"""login""":"""admin""","""password""":"""password"""} "http://localhost:8080/login"
+ */
+
+/*
+Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY0MzcwOTEzM30.SxgJaX9wQH5SbB97zAfIbzYLRc4WDw5MyhuZsXRk8iK6oIdBwxkx5kAQTwwRtmW8LDyRh5btQDSde5tx3gDX6w
  */
 
