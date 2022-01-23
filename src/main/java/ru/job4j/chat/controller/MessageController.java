@@ -11,6 +11,8 @@ import ru.job4j.chat.model.User;
 import ru.job4j.chat.model.UserDTO;
 import ru.job4j.chat.service.ChatService;
 
+import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/message")
@@ -21,10 +23,7 @@ public class MessageController {
 
 
     @PostMapping
-    public ResponseEntity<Message> createMessage(@RequestBody Message message, @RequestParam int userId) {
-        if (message.getText() == null) {
-            throw new NullPointerException("Сообщение не содержит текста");
-        }
+    public ResponseEntity<Message> createMessage(@Valid @RequestBody Message message, @RequestParam int userId) {
         return new ResponseEntity<Message>(
                 this.chatService.saveMessage(message, userId),
                 HttpStatus.CREATED);

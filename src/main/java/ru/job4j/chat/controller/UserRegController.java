@@ -7,6 +7,7 @@ import ru.job4j.chat.exception.UserAllReadyExistException;
 import ru.job4j.chat.model.User;
 import ru.job4j.chat.service.ChatService;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -26,13 +27,7 @@ public class UserRegController {
    }
 
     @PostMapping("/sign-up")
-    public void signUp(@RequestBody Map<String, String> body) {
-        var login = body.get("login");
-        var password = body.get("password");
-        if (login == null || password == null) {
-            throw new NullPointerException("Логин или пароль не указаны");
-        }
-        User user = User.of(login, password);
+    public void signUp(@Valid @RequestBody User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         try {
             chatService.saveUser(user);

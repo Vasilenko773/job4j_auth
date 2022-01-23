@@ -12,6 +12,7 @@ import ru.job4j.chat.service.ChatService;
 import ru.job4j.model.Person;
 
 
+import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
@@ -33,13 +34,7 @@ public class UserController {
 
     @PostMapping()
     @ExceptionHandler(value = {UserAllReadyExistException.class, IllegalArgumentException.class})
-    public ResponseEntity<User> create(@RequestBody Map<String, String> body) {
-        var login = body.get("login");
-        var password = body.get("password");
-        if (login == null || password == null) {
-            throw new NullPointerException("Логин или пароль не указаны");
-        }
-        User user = User.of(login, password);
+    public ResponseEntity<User> create(@Valid @RequestBody User user) {
         try {
             this.chatService.saveUser(user);
             return new ResponseEntity<User>(HttpStatus.CREATED);

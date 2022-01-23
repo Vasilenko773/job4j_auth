@@ -28,13 +28,13 @@ class PersonControllerTest {
         assertThat(personController.findAll().size(), is(1));
     }
 
-    @Test
+  /*  @Test
     @Transactional
     public void addPersonAndAndFindById() {
         personController.saveOrUpdate(new Person(1, "First", "First"));
         personController.saveOrUpdate(new Person(2, "Second", "Second"));
         assertThat(personController.findById(2), is(new ResponseEntity<Person>(HttpStatus.OK)));
-    }
+    }*/
 
     @Test
     @Transactional

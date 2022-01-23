@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.chat.model.*;
 import ru.job4j.chat.service.ChatService;
 
+import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -21,12 +22,7 @@ public class RoomController {
     private ChatService chatService;
 
     @PostMapping
-    public ResponseEntity<Room> createRoom(@RequestBody Map<String, String> body) {
-        var name = body.get("name");
-        if (name == null) {
-            throw new NullPointerException("Не указано название комнаты");
-        }
-       Room room = Room.of(name);
+    public ResponseEntity<Room> createRoom(@Valid  @RequestBody Room room) {
         return new ResponseEntity<Room>(
                 this.chatService.saveRoom(room),
                 HttpStatus.CREATED);
