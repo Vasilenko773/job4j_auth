@@ -74,5 +74,21 @@ public class ChatService {
         room.addUser(findUserById(userId));
         roomRepository.save(room);
     }
+
+    public Role findRoleById(int id) {
+        return roleRepository.findById(id).orElse(null);
+    }
+
+    public void saveRole(Role role) {
+        roleRepository.save(role);
+    }
+
+    public Message findMessageById(int id) {
+        return messageRepository.findById(id).orElse(null);
+    }
+
+    public Room findRoomById(int id) {
+        return roomRepository.findById(id).orElse(null);
+    }
 }
 
