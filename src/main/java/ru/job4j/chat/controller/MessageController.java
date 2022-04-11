@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.chat.model.Message;
 import ru.job4j.chat.model.MessageDTO;
-import ru.job4j.chat.model.User;
-import ru.job4j.chat.model.UserDTO;
 import ru.job4j.chat.service.ChatService;
 
 import javax.validation.Valid;
